@@ -1,0 +1,28 @@
+#read-me
+#chinadata爬取流程
+1.对单个项目要爬取的字段进行提取出来，这个工程由于页面是js异步加载出来的，所以用PhantomJS进行爬取，这里需要爬取的字段如下：
+（1）title 类目的名称
+（2）sum_trade 总的交易额度，单位：元
+（3）trade_price 交易单价，单位：元
+（4）data_industry 数据所属行业
+（5）publish_time 发布时间
+（6）data_introduce 数据介绍
+（7）comment_num 评论总数
+（8）name_id 商家ID信息
+
+2.提取、拼接访问具体页面的URL，通过查看网络请求，获得整页的接口
+"http://www.chinadatatrading.com/tradelistliebiao"
+参数如下：
+payload = {"isFree":1,"dataPattern":0,"dataSource":0,"queryString":"","ishot":1,"isnew":9,"isprice":9,"btype":4,"stype":99,"curr":page}
+isFree：是否是收费
+ishot：排序
+btype:集体的分类信息ID
+stype:99 这一类进行全部爬取
+curr: 当前页面数字
+
+3.通过控制btype和curr的范围控制将数据分别存在相应的数据库tab中
+
+4.建表语句：
+CREATE TABLE music(`title` VARCHAR(64) COMMENT '标题',`sum_trade` float COMMENT '累计交易',`trade_price` float COMMENT '交易价格',`data_industry` VARCHAR(64) COMMENT '数据所属行业',`publish_time` VARCHAR(64) COMMENT '发布时间',`data_introduce` LONGTEXT COMMENT '数据介绍',`comment_num` INT(32) COMMENT '评价数量',`name_id` VARCHAR(64) COMMENT '商家ID')
+
+
